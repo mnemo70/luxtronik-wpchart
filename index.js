@@ -41,25 +41,22 @@ function initChart() {
 }
 
 function updateChart(heatingEnd, heatingFoot, heatingDelta) {
-    const heatingStep = Math.abs(heatingEnd - heatingFoot) / 40;
-    console.log('heatingEnd=' + heatingEnd + ' heatingFoot=' + heatingFoot + ' heatingStep=' + heatingStep);
-
     const calculatedData = [];
  
     for(var i = 0; i <= 80; i++) {
-        var xVal = (i / 2) - 20;
-        var yVal = heatingEnd - (i / 2) * heatingStep;
+        var outdoorTemp = (i / 2) - 20;
+        var yVal = calcHeatcurve(outdoorTemp, heatingEnd, heatingFoot, heatingDelta);
         calculatedData.push({
-            x: xVal,
+            x: outdoorTemp,
             y: yVal
         });
     }
 
-    myChart.data.labels.pop();
-    myChart.data.datasets.forEach((dataset) => {
+    //myChart.data.labels.pop();
+    /*myChart.data.datasets.forEach((dataset) => {
         console.log('Pop dataset=' + dataset.data.label + ' data: ' + dataset.data.length);
         dataset.data.pop();
-    });
+    });*/
     //myChart.data.labels.push(label);
     //myChart.data.datasets[0].data.push(calculatedData);
     myChart.data.datasets[0].data = calculatedData;
@@ -68,4 +65,11 @@ function updateChart(heatingEnd, heatingFoot, heatingDelta) {
         dataset.data.push(calculatedData);
     });*/
     myChart.update();
+}
+
+function calcHeatcurve(outdoorTemp, heatingEnd, heatingFoot, heatingDelta) {
+    return ((heatingFoot - outdoorTemp * (heatingEnd - 20.0)) / (20.0 - ((outdoorTemp - heatingFoot) / 2))) + heatingFoot;
+    /*const heatingStep = Math.abs(heatingEnd - heatingFoot) / 40;
+    console.log('heatingEnd=' + heatingEnd + ' heatingFoot=' + heatingFoot + ' heatingStep=' + heatingStep);
+    return heatingEnd - outdoorTemp * heatingStep;*/
 }
