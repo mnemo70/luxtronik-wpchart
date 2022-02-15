@@ -1,6 +1,5 @@
 function initChart() {
-    const ctx = document.getElementById('myChart').getContext('2d');
-    var calculatedData = [];
+    const calculatedData = [];
     for(var i = 0; i <= 80; i++) {
         var xVal = (i / 2) - 20;
         var yVal = 60 - i;
@@ -9,6 +8,8 @@ function initChart() {
             y: yVal
         });
     }
+
+    const ctx = document.getElementById('myChart').getContext('2d');
     const myChart = new Chart(ctx, {
         type: 'line',
         data: {
