@@ -112,6 +112,7 @@ function initChart() {
             }]
         },
         options: {
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: "bottom"
