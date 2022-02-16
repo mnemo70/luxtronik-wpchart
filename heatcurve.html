@@ -83,6 +83,8 @@ Slider from: https://www.w3schools.com/howto/howto_js_rangeslider.asp
         <div><label for="heatingDelta" class="strikethrough">Delta: </label><input id="heatingDelta" type="text" size="4" maxlength="4" value="0" style="text-align:right">
         <button onclick="addValue('heatingDelta',0.5)">+1</button> <button onclick="addValue('heatingDelta',-0.5)">-1</button></div>
 
+        <div><label for="reversex">X-Achse umkehren: </label><input id="reversex" type="checkbox" onclick="updateGraph()"></div>
+  
         <button onclick="updateGraph()">Update</button>
     </div>
     <div class="footer"><br>This page is not affiliated or endorsed by Alpha-InnoTec or Novelan. Provided without warranty.<br>

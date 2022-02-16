@@ -31,6 +31,8 @@ function updateGraph() {
   const heatingEnd = parseFloat(document.getElementById("heatingEnd").value.trim());
   const heatingFoot = parseFloat(document.getElementById("heatingFoot").value.trim());
   const heatingDelta = parseFloat(document.getElementById("heatingDelta").value.trim());
+  const reverseXaxis = document.getElementById("reversex").checked;
+
   // Check all input values for consistency
   Object.keys(tempLimits).forEach(id => {
     checkLimit(id)
@@ -38,7 +40,7 @@ function updateGraph() {
   if(heatingEnd !== 'NaN' || heatingFoot !== 'NaN' || heatingDelta !== 'NaN') {
     if(myChart === null)
       initChart();
-    updateChart(heatingEnd, heatingFoot, heatingDelta);
+    updateChart(heatingEnd, heatingFoot, heatingDelta, reverseXaxis);
   }
   else
     window.alert("Ungültige Wertangaben! Bitte ändern.")
@@ -68,7 +70,7 @@ function addValue(id, val) {
 /**
  * Update the previously initialized graph.
  */
-function updateChart(heatingEnd, heatingFoot, heatingDelta) {
+function updateChart(heatingEnd, heatingFoot, heatingDelta, reverseXaxis) {
     const calculatedData = [];
 
     const xLow = -20;
@@ -84,6 +86,7 @@ function updateChart(heatingEnd, heatingFoot, heatingDelta) {
     }
 
     myChart.data.datasets[0].data = calculatedData;
+    myChart.scales["x"].options.reverse = reverseXaxis;
     myChart.update();
 }
 
