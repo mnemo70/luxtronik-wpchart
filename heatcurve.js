@@ -22,6 +22,11 @@ function initChart() {
             }]
         },
         options: {
+            plugins: {
+                legend: {
+                    position: "bottom"
+                }
+            },
             scales: {
                 x: {
                     type: "linear",
@@ -42,34 +47,23 @@ function initChart() {
 
 function updateChart(heatingEnd, heatingFoot, heatingDelta) {
     const calculatedData = [];
- 
-    for(var i = 0; i <= 80; i++) {
-        var outdoorTemp = (i / 2) - 20;
-        var yVal = calcHeatcurve(outdoorTemp, heatingEnd, heatingFoot, heatingDelta);
+
+    const xLow = -20;
+    const xHigh = heatingFoot;
+    const steps = (xHigh - xLow) * 2;
+    for (let i = 0; i <= steps; i++) {
+        let outdoorTemp = (xLow + i / 2);
+        let yVal = calcHeatcurve(outdoorTemp, heatingEnd, heatingFoot, heatingDelta);
         calculatedData.push({
             x: outdoorTemp,
             y: yVal
         });
     }
 
-    //myChart.data.labels.pop();
-    /*myChart.data.datasets.forEach((dataset) => {
-        console.log('Pop dataset=' + dataset.data.label + ' data: ' + dataset.data.length);
-        dataset.data.pop();
-    });*/
-    //myChart.data.labels.push(label);
-    //myChart.data.datasets[0].data.push(calculatedData);
     myChart.data.datasets[0].data = calculatedData;
-    /*myChart.data.datasets.forEach((dataset) => {
-        console.log('Push set=' + dataset.data.label + ' data: ' + calculatedData.length);
-        dataset.data.push(calculatedData);
-    });*/
     myChart.update();
 }
 
 function calcHeatcurve(outdoorTemp, heatingEnd, heatingFoot, heatingDelta) {
     return ((heatingFoot - outdoorTemp * (heatingEnd - 20.0)) / (20.0 - ((outdoorTemp - heatingFoot) / 2))) + heatingFoot;
-    /*const heatingStep = Math.abs(heatingEnd - heatingFoot) / 40;
-    console.log('heatingEnd=' + heatingEnd + ' heatingFoot=' + heatingFoot + ' heatingStep=' + heatingStep);
-    return heatingEnd - outdoorTemp * heatingStep;*/
 }

@@ -11,7 +11,10 @@
   <script src="heatcurve.js" type="text/javascript"></script>
 <style>
 body {
-    font-family: "Consolas"
+  font-family: "Consolas", "Courier New", monospace
+}
+.strikethrough {
+  text-decoration: line-through;
 }
 /*
 Slider from: https://www.w3schools.com/howto/howto_js_rangeslider.asp
@@ -72,7 +75,7 @@ Slider from: https://www.w3schools.com/howto/howto_js_rangeslider.asp
         <div><label for="heatingFoot">Fußpunkt: </label><input id="heatingFoot" type="text" size="4" maxlength="4" value="20" style="text-align:right">
         <button onclick="addValue('heatingFoot',0.5)">+1</button> <button onclick="addValue('heatingFoot',-0.5)">-1</button></div>
 
-        <div><label for="heatingDelta">Delta: </label><input id="heatingDelta" type="text" size="4" maxlength="4" value="0" style="text-align:right">
+        <div><label for="heatingDelta" class="strikethrough">Delta: </label><input id="heatingDelta" type="text" size="4" maxlength="4" value="0" style="text-align:right">
         <button onclick="addValue('heatingDelta',0.5)">+1</button> <button onclick="addValue('heatingDelta',-0.5)">-1</button></div>
 
         <button onclick="updateGraph()">Update</button>
