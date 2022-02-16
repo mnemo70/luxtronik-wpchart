@@ -1,3 +1,11 @@
+/**
+ * heatpump.js
+ *
+ * Script part of the interactive heatcurve visualization.
+ * Uses Chart.js for the charting.
+ *
+ * Author: Thomas Meyer <mnemotron@gmail.com>
+ */
 let myChart = null;
 
 // Validation limits for temperatures.
@@ -99,6 +107,7 @@ function initChart() {
     const ctx = document.getElementById('myChart').getContext('2d');
     myChart = new Chart(ctx, {
         type: 'line',
+        //bezierCurve : false,
         data: {
             datasets: [{
                 label: 'Heizkurve',
@@ -107,12 +116,8 @@ function initChart() {
                     xAxisKey: "x",
                     yAxisKey: "y",
                 },
-                backgroundColor: [
-                    '#ff3030'
-                ],
-                borderColor: [
-                    '#ff3030'
-                ],
+                backgroundColor: '#ff3030',
+                borderColor: '#ff3030',
                 borderWidth: 1
             }]
         },
