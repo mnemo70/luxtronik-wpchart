@@ -1,5 +1,63 @@
 let myChart = null;
 
+// Validation limits for temperatures.
+const tempLimits = {
+    heatingEnd: {min: 20, max: 70},
+    heatingFoot: {min: 5, max: 35},
+    heatingDelta: {min: -5, max: 5}
+}
+
+/**
+ * Check one input element for min/max values.
+ **/
+function checkLimit(id) {
+  const val = parseFloat(document.getElementById(id).value.trim());
+  if(val !== 'NaN') {
+    if(val < tempLimits[id].min) {
+      document.getElementById(id).value = tempLimits[id].min;
+    }
+    else {
+      if(val > tempLimits[id].max) {
+        document.getElementById(id).value = tempLimits[id].max;
+      }
+    }
+  }
+}
+
+/**
+ * Update the graph with the current values from the user.
+ **/
+function updateGraph() {
+  const heatingEnd = parseFloat(document.getElementById("heatingEnd").value.trim());
+  const heatingFoot = parseFloat(document.getElementById("heatingFoot").value.trim());
+  const heatingDelta = parseFloat(document.getElementById("heatingDelta").value.trim());
+  // Check all input values for consistency
+  Object.keys(tempLimits).forEach(id => {
+    checkLimit(id)
+  });
+  if(heatingEnd !== 'NaN' || heatingFoot !== 'NaN' || heatingDelta !== 'NaN') {
+    if(myChart === null)
+      initChart();
+    updateChart(heatingEnd, heatingFoot, heatingDelta);
+  }
+  else
+    window.alert("Ungültige Wertangaben! Bitte ändern.")
+}
+
+/**
+ * Add (or subtract) a value from an input element's value.
+ */
+function addValue(id, val) {
+  const el = document.getElementById(id);
+  if(el !== null) {
+    const v = parseFloat(el.value);
+    if(v !== 'NaN') {
+      el.value = v + val;
+      updateGraph();
+    }
+  }
+}
+
 /**
  * Calculate desired heating return value for given outdoor temperature and heatcurve.
  */
