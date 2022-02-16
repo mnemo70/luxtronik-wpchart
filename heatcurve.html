@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>wpchart</title>
-<script src="chart.min.js" type="text/javascript"></script>
-<script src="heatcurve.js" type="text/javascript"></script>
+  <meta charset="UTF-8">
+  <meta name="description" content="Visualisierung der Luxtronik Heizkurve">
+  <meta name="keywords" content="heizkurve,luxtronik,wärmepumpe">
+  <meta name="author" content="Thomas Meyer">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxtronik Heizkurvendiagramm</title>
+  <script src="chart.min.js" type="text/javascript"></script>
+  <script src="heatcurve.js" type="text/javascript"></script>
 <style>
 body {
     font-family: "Consolas"
 }
-
 /*
 Slider from: https://www.w3schools.com/howto/howto_js_rangeslider.asp
 */
 .slidecontainer {
   width: 100%; /* Width of the outside container */
 }
-
 /* The slider itself */
 .slider {
   -webkit-appearance: none;  /* Override default CSS styles */
@@ -54,6 +57,7 @@ Slider from: https://www.w3schools.com/howto/howto_js_rangeslider.asp
 </head>
 
 <body>
+    <div>Luxtronik Heizkurvendiagramm</div>
     <div class="chart-container" style="width: 1000px; height: 400px">
         <canvas id="myChart" width="1000" height="400"></canvas>
     </div>
@@ -82,6 +86,9 @@ const tempLimits = {
     heatingDelta: {min: -5, max: 5}
 }
 
+/**
+ * Check one input element for min/max values.
+ **/
 function checkLimit(id) {
   const val = parseFloat(document.getElementById(id).value.trim());
   if(val !== 'NaN') {
@@ -96,10 +103,17 @@ function checkLimit(id) {
   }
 }
 
+/**
+ * Update the graph with the current values from the user.
+ **/
 function updateGraph() {
   const heatingEnd = parseFloat(document.getElementById("heatingEnd").value.trim());
   const heatingFoot = parseFloat(document.getElementById("heatingFoot").value.trim());
   const heatingDelta = parseFloat(document.getElementById("heatingDelta").value.trim());
+  // Check all input values for consistency
+  Object.keys(tempLimits).forEach(id => {
+    checkLimit(id)
+  });
   if(heatingEnd !== 'NaN' || heatingFoot !== 'NaN' || heatingDelta !== 'NaN') {
     if(myChart === null)
       initChart();
