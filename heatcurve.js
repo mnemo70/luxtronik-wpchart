@@ -68,7 +68,7 @@ function updateChart(heatingEnd, heatingFoot, heatingDelta, reverseXaxis) {
 
     // Calculate the complete heatcurve
     const xLow = -20;
-    const xHigh = heatingFoot;
+    const xHigh = Math.max(heatingFoot, 20);
     const steps = (xHigh - xLow) * 2;
     for (let i = 0; i <= steps; i++) {
         let outdoorTemp = (xLow + i / 2);
