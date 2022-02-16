@@ -61,18 +61,12 @@ function addValue(id, val) {
 }
 
 /**
- * Calculate desired heating return value for given outdoor temperature and heatcurve.
- */
- function calcHeatcurve(outdoorTemp, heatingEnd, heatingFoot, heatingDelta) {
-    return ((heatingFoot - outdoorTemp * (heatingEnd - 20.0)) / (20.0 - ((outdoorTemp - heatingFoot) / 2))) + heatingFoot;
-}
-
-/**
  * Update the previously initialized graph.
  */
 function updateChart(heatingEnd, heatingFoot, heatingDelta, reverseXaxis) {
     const calculatedData = [];
 
+    // Calculate the complete heatcurve
     const xLow = -20;
     const xHigh = heatingFoot;
     const steps = (xHigh - xLow) * 2;
@@ -90,13 +84,20 @@ function updateChart(heatingEnd, heatingFoot, heatingDelta, reverseXaxis) {
     myChart.update();
 }
 
+/**
+ * Calculate desired heating return value for given outdoor temperature and heatcurve.
+ */
+ function calcHeatcurve(outdoorTemp, heatingEnd, heatingFoot, heatingDelta) {
+    return ((heatingFoot - outdoorTemp * (heatingEnd - 20.0)) / (20.0 - ((outdoorTemp - heatingFoot) / 2))) + heatingFoot + heatingDelta;
+}
+
 function initChart() {
     const ctx = document.getElementById('myChart').getContext('2d');
     myChart = new Chart(ctx, {
         type: 'line',
         data: {
             datasets: [{
-                label: 'RL-Solltemperatur',
+                label: 'Heizkurve',
                 data: [],
                 parsing: {
                     xAxisKey: "x",
@@ -121,13 +122,21 @@ function initChart() {
             scales: {
                 x: {
                     type: "linear",
-                    title: "Außentemp.",
+                    title: {
+                        display: true,
+                        text: "Außentemperatur °C",
+                        color: "#606060"
+                    },
                     suggestedMin: -20,
                     suggestedMax: 20
                 },
                 y: {
                     type: "linear",
-                    title: "°C",
+                    title: {
+                        display: true,
+                        text: "Rücklauf-Solltempeatur °C",
+                        color: "#606060"
+                    },
                     suggestedMin: 10,
                     suggestedMax: 40
                 }
