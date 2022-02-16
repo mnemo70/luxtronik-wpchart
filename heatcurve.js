@@ -96,7 +96,7 @@ function initChart() {
         type: 'line',
         data: {
             datasets: [{
-                label: 'RL-Temperatur',
+                label: 'RL-Solltemperatur',
                 data: [],
                 parsing: {
                     xAxisKey: "x",
