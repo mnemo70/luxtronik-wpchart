@@ -18,7 +18,7 @@ body {
   text-decoration: line-through;
 }
 .label-box {
-  min-width: 18em;
+  min-width: 11em;
   float: left;
 }
 .footer {
@@ -28,7 +28,7 @@ body {
 .chart-container {
   position: relative;
   width: 95vw;
-  height: 40vh;
+  height: 50vh;
   padding: 0;
   margin: 0.5em;
 }
@@ -95,10 +95,10 @@ Slider from: https://www.w3schools.com/howto/howto_js_rangeslider.asp
           <button onclick="addValue('heatingEnd',0.5)">+.5</button> <button onclick="addValue('heatingEnd',-0.5)">-.5</button>
         </div>
 
-        <div><label for="heatingFoot" class="label-box">Fußpunkt/Parallelverschiebung: </label><input id="heatingFoot" type="text" size="4" maxlength="4" value="20" style="text-align:right">
+        <div><label for="heatingFoot" class="label-box">Fußpunkt/PVS: </label><input id="heatingFoot" type="text" size="4" maxlength="4" value="20" style="text-align:right">
         <button onclick="addValue('heatingFoot',0.5)">+.5</button> <button onclick="addValue('heatingFoot',-0.5)">-.5</button></div>
 
-        <div><label for="heatingDelta" class="label-box">Temperaturabweichung (Delta): </label><input id="heatingDelta" type="text" size="4" maxlength="4" value="0" style="text-align:right">
+        <div><label for="heatingDelta" class="label-box">Temp.abweichung: </label><input id="heatingDelta" type="text" size="4" maxlength="4" value="0" style="text-align:right">
         <button onclick="addValue('heatingDelta',0.5)">+.5</button> <button onclick="addValue('heatingDelta',-0.5)">-.5</button></div>
 
         <div><label for="reversex" class="label-box">X-Achse umkehren: </label><input id="reversex" type="checkbox" onclick="updateGraph()"></div>
