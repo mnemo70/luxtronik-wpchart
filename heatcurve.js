@@ -134,7 +134,7 @@ function initChart() {
                     type: "linear",
                     title: {
                         display: true,
-                        text: "Rücklauf-Solltempeatur °C",
+                        text: "Rücklauf-Solltemperatur °C",
                         color: "#606060"
                     },
                     suggestedMin: 10,
