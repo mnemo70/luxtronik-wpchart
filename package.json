@@ -9,7 +9,6 @@
   "author": "Thomas Meyer",
   "license": "ISC",
   "dependencies": {
-    "chart.js": "^3.7.1",
     "http-server": "^14.1.0"
   }
 }
