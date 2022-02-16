@@ -88,9 +88,13 @@ function updateChart(heatingEnd, heatingFoot, heatingDelta, reverseXaxis) {
  * Calculate desired heating return value for given outdoor temperature and heatcurve.
  */
  function calcHeatcurve(outdoorTemp, heatingEnd, heatingFoot, heatingDelta) {
-    return ((heatingFoot - outdoorTemp * (heatingEnd - 20.0)) / (20.0 - ((outdoorTemp - heatingFoot) / 2))) + heatingFoot + heatingDelta;
+    return heatingFoot + (heatingEnd - 20) * (heatingFoot - outdoorTemp) / (20 - (outdoorTemp - heatingFoot) / 2) + heatingDelta;
+    //return ((heatingFoot - outdoorTemp * (heatingEnd - 20.0)) / (20.0 - ((outdoorTemp - heatingFoot) / 2))) + heatingFoot + heatingDelta;
 }
 
+/**
+ * Init the Chart.js component.
+ */
 function initChart() {
     const ctx = document.getElementById('myChart').getContext('2d');
     myChart = new Chart(ctx, {
@@ -104,10 +108,10 @@ function initChart() {
                     yAxisKey: "y",
                 },
                 backgroundColor: [
-                    '#ff0000'
+                    '#ff3030'
                 ],
                 borderColor: [
-                    '#e00000'
+                    '#ff3030'
                 ],
                 borderWidth: 1
             }]
