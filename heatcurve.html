@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="description" content="Intraktive Visualisierung der Luxtronik Heizkurve">
+  <meta charset="utf-8">
+  <meta name="description" content="Interaktive Visualisierung der Luxtronik Heizkurve">
   <meta name="keywords" content="heizkurve,luxtronik,wärmepumpe,heizung,wärme,fußbodenheizung,vorlauf,rücklauf">
-  <meta name="author" content="Thomas Meyer <mnemotron@gmail.com>">
+  <meta name="author" content="Thomas Meyer, mnemotron@gmail.com">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Luxtronik Heizkurvendiagramm</title>
   <link href="favicon.ico" rel="icon" type="image/x-icon">
@@ -13,13 +13,6 @@
 <style>
 body {
   font-family: "Consolas", "Courier New", monospace
-}
-.strikethrough {
-  text-decoration: line-through;
-}
-.label-box {
-  min-width: 11em;
-  float: left;
 }
 .footer {
   font-size: 8pt;
@@ -35,45 +28,8 @@ body {
 canvas {
   border: 2px solid #d0d0d0;
 }
-/*
-Slider from: https://www.w3schools.com/howto/howto_js_rangeslider.asp
-*/
-.slidecontainer {
-  width: 100%; /* Width of the outside container */
-}
-/* The slider itself */
-.slider {
-  -webkit-appearance: none;  /* Override default CSS styles */
-  appearance: none;
-  width: 100%; /* Full-width */
-  height: 25px; /* Specified height */
-  background: #d3d3d3; /* Grey background */
-  outline: none; /* Remove outline */
-  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-  transition: opacity .2s;
-}
-
-/* Mouse-over effects */
-.slider:hover {
-  opacity: 1; /* Fully shown on mouse-over */
-}
-
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
-  appearance: none;
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #04AA6D; /* Green background */
-  cursor: pointer; /* Cursor on hover */
-}
-
-.slider::-moz-range-thumb {
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #04AA6D; /* Green background */
-  cursor: pointer; /* Cursor on hover */
+#datatable {
+  font-size: 1em;
 }
 </style>
 </head>
@@ -84,41 +40,102 @@ Slider from: https://www.w3schools.com/howto/howto_js_rangeslider.asp
     <div class="chart-container">
         <canvas id="myChart"></canvas>
     </div>
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th colspan="2">Endpunkt</th>
+                <th colspan="2">Fußpunkt/PVS</th>
+                <th colspan="2">Temp.abweichung</th>
+                <th>Aktiv</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="font-weight:bold;color:#ff3030">Kurve 1</td>
+                <td><input id="heatingEnd0" type="text" size="4" maxlength="4" value="25" style="text-align:right"></td>
+                <td>
+                <button onclick="addValue('heatingEnd0',0.5)">+.5</button>
+                <button onclick="addValue('heatingEnd0',-0.5)">-.5</button>
+                </td>
 
-    <div>
-        <!--<div class="slidecontainer">
-            <input type="range" id="myRange" min="10" max="50" value="25" class="slider">
-        </div>
-        <div id="demo"></div>-->
-        <div><div class="label-box"><label for="heatingEnd">Endpunkt: </label></div>
-          <input id="heatingEnd" type="text" size="4" maxlength="4" value="25" style="text-align:right">
-          <button onclick="addValue('heatingEnd',0.5)">+.5</button> <button onclick="addValue('heatingEnd',-0.5)">-.5</button>
-        </div>
+                <td><input id="heatingFoot0" type="text" size="4" maxlength="4" value="20" style="text-align:right"></td>
+                <td>
+                    <button onclick="addValue('heatingFoot0',0.5)">+.5</button>
+                    <button onclick="addValue('heatingFoot0',-0.5)">-.5</button>
+                </td>
 
-        <div><label for="heatingFoot" class="label-box">Fußpunkt/PVS: </label><input id="heatingFoot" type="text" size="4" maxlength="4" value="20" style="text-align:right">
-        <button onclick="addValue('heatingFoot',0.5)">+.5</button> <button onclick="addValue('heatingFoot',-0.5)">-.5</button></div>
+                <td><input id="heatingDelta0" type="text" size="4" maxlength="4" value="0" style="text-align:right"></td>
+                <td>
+                    <button onclick="addValue('heatingDelta0',0.5)">+.5</button>
+                    <button onclick="addValue('heatingDelta0',-0.5)">-.5</button>
+                </td>
 
-        <div><label for="heatingDelta" class="label-box">Temp.abweichung: </label><input id="heatingDelta" type="text" size="4" maxlength="4" value="0" style="text-align:right">
-        <button onclick="addValue('heatingDelta',0.5)">+.5</button> <button onclick="addValue('heatingDelta',-0.5)">-.5</button></div>
+                <td><input onclick="updateGraph()" id="heatingShow0" type="checkbox" checked></td>
+            </tr>
+            <tr>
+                <td style="font-weight:bold;color:#308030">Kurve 2</td>
+                <td><input id="heatingEnd1" type="text" size="4" maxlength="4" value="27" style="text-align:right"></td>
+                <td>
+                    <button onclick="addValue('heatingEnd1',0.5)">+.5</button>
+                    <button onclick="addValue('heatingEnd1',-0.5)">-.5</button>
+                </td>
 
-        <div><label for="reversex" class="label-box">X-Achse umkehren: </label><input id="reversex" type="checkbox" onclick="updateGraph()"></div>
-  
-        <button onclick="updateGraph()" style="margin:1em 0.5em 1em 0.5em">Diagramm aktualisieren</button>
-    </div>
-    <div class="footer"><br>This page is not affiliated or endorsed by Alpha-InnoTec or Novelan. Provided without warranty.<br>
+                <td><input id="heatingFoot1" type="text" size="4" maxlength="4" value="20" style="text-align:right"></td>
+                <td>
+                    <button onclick="addValue('heatingFoot1',0.5)">+.5</button>
+                    <button onclick="addValue('heatingFoot1',-0.5)">-.5</button>
+                </td>
+
+                <td><input id="heatingDelta1" type="text" size="4" maxlength="4" value="0" style="text-align:right"></td>
+                <td>
+                    <button onclick="addValue('heatingDelta1',0.5)">+.5</button>
+                    <button onclick="addValue('heatingDelta1',-0.5)">-.5</button>
+                </td>
+
+                <td><input onclick="updateGraph()" id="heatingShow1" type="checkbox"></td>
+            </tr>
+            <tr>
+                <td style="font-weight:bold;color:#3030ff">Kurve 3</td>
+                <td><input id="heatingEnd2" type="text" size="4" maxlength="4" value="29" style="text-align:right"></td>
+                <td>
+                    <button onclick="addValue('heatingEnd2',0.5)">+.5</button>
+                    <button onclick="addValue('heatingEnd2',-0.5)">-.5</button>
+                </td>
+
+                <td><input id="heatingFoot2" type="text" size="4" maxlength="4" value="20" style="text-align:right"></td>
+                <td>
+                    <button onclick="addValue('heatingFoot2',0.5)">+.5</button>
+                    <button onclick="addValue('heatingFoot2',-0.5)">-.5</button>
+                </td>
+
+                <td><input id="heatingDelta2" type="text" size="4" maxlength="4" value="0" style="text-align:right"></td>
+                <td>
+                    <button onclick="addValue('heatingDelta2',0.5)">+.5</button>
+                    <button onclick="addValue('heatingDelta2',-0.5)">-.5</button>
+                </td>
+
+                <td><input onclick="updateGraph()" id="heatingShow2" type="checkbox"></td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <label for="reversex" class="label-box">X-Achse umkehren: </label><input id="reversex" type="checkbox" onclick="updateGraph()">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <button onclick="updateGraph()" style="margin:1em 0.5em 1em 0.5em">Diagramm aktualisieren</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="footer">
+        This page is not affiliated or endorsed by Alpha-InnoTec or Novelan. Provided without warranty.
     </div>
 
 <script type="text/javascript">
-  updateGraph();
-
-/*var slider = document.getElementById("myRange");
-var output = document.getElementById("demo");
-output.innerHTML = slider.value; // Display the default slider value
-
-// Update the current slider value (each time you drag the slider handle)
-slider.oninput = function() {
-  output.innerHTML = this.value;
-}*/
+// Show initial graph
+updateGraph();
 </script>
 </body>
 </html>
